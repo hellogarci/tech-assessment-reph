@@ -1,3 +1,28 @@
 {
-    "home": "/"
+    "home": "/",
+    "flightType": {
+        "return": "Return",
+        "oneWay": "One-way",
+        "multiCity": "Multi-city"
+    },
+    "airport": {
+        "naia": {
+            "code": "MNL",
+            "loc": "Manila",
+            "name": "Ninoy Aquino Intl",
+            "country": "Philippines"
+        },
+        "hnd": {
+            "code": "HND",
+            "loc": "Tokyo",
+            "name": "Haneda",
+            "country": "Japan"
+        }
+    },
+    "errMsg": {
+        "enterDest": "Please enter a Destination airport.",
+        "departureDate": "Please enter a Departure date.",
+        "returnDate": "Please enter a Return date."
+    }
+    
 }
