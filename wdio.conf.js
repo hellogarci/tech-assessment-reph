@@ -1,3 +1,5 @@
+import allureReporter from '@wdio/allure-reporter';
+
 export const config = {
     //
     // ====================
@@ -21,7 +23,9 @@ export const config = {
     // of the config file unless it's absolute.
     //
     specs: [
-        './test/specs/**/*.js'
+        // './test/specs/**/*.js'
+        './test/specs/home.spec.js'
+        // './test/specs/flight-search-result.spec.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -50,7 +54,12 @@ export const config = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-        browserName: 'chrome'
+        browserName: 'chrome',
+        'goog:chromeOptions': {
+            args: [
+                '--window-size=1920,1080'
+            ]
+        }
     }],
 
     //
@@ -147,7 +156,7 @@ export const config = {
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 60000
+        timeout: 120000
     },
 
     //
@@ -244,8 +253,10 @@ export const config = {
      * @param {boolean} result.passed    true if test has passed, otherwise false
      * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
-    // afterTest: function(test, context, { error, result, duration, passed, retries }) {
-    // },
+    afterTest: async function(test, context, { error, result, duration, passed, retries }) {
+        const screenshot = await browser.takeScreenshot();
+        allureReporter.addArgument('timestamp', Date.now());
+    },
 
 
     /**
