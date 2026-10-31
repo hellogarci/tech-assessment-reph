@@ -9,6 +9,10 @@
     "@wdio/spec-reporter": "^10.1.0"
   },
   "scripts": {
-    "wdio": "wdio run ./wdio.conf.js"
+    "wdio": "wdio run ./wdio.conf.js",
+    "api": "wdio run ./api.conf.js"
+  },
+  "dependencies": {
+    "axios": "^1.21.0"
   }
 }
