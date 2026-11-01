@@ -8,7 +8,7 @@
             "checkin": "2026-10-01",
             "checkout": "2026-10-09"
         },
-        "additionalneeds": "valet"
+        "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
     },
 
     "cb": [
@@ -23,7 +23,7 @@
                     "checkin": "2026-10-01",
                     "checkout": "2026-10-09"
                 },
-                "additionalneeds": "valet"
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
             },
             "expectedStatus": 200
         },
@@ -37,12 +37,12 @@
                     "checkin": "2026-10-01",
                     "checkout": "2026-10-09"
                 },
-                "additionalneeds": "valet"
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
             },
             "expectedStatus": 500
         },
         {
-            "desc": "firstname with number",
+            "desc": "firstname as number",
             "data": {
                 "firstname": 1234,
                 "lastname": "Dela Cruz",
@@ -52,7 +52,7 @@
                     "checkin": "2026-10-31",
                     "checkout": "2026-11-30"
                 },
-                "additionalneeds": "massage"
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
             },
             "expectedStatus": 500
         },
@@ -67,39 +67,1123 @@
                     "checkin": "2026-10-31",
                     "checkout": "2026-11-30"
                 },
-                "additionalneeds": "massage"
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 200
+        },
+        {
+            "desc": "lastname with empty string",
+            "data": {
+                "firstname": "Juan",
+                "lastname": "",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 200
+        },
+        {
+            "desc": "lastname missing",
+            "data": {
+                "firstname": "Juan",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 500
+        },
+        {
+            "desc": "lastname as number",
+            "data": {
+                "firstname": "Juan",
+                "lastname": 5678,
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 500
+        },
+        {
+            "desc": "lastname with special character",
+            "data": {
+                "firstname": "Juan",
+                "lastname": "Nuñez",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 200
+        },
+        {
+            "desc": "totalprice missing",
+            "data": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 500
+        },
+        {
+            "desc": "totalprice has negative value",
+            "data": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": -5000,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 200
+        },
+        {
+            "desc": "totalprice with string",
+            "data": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": "5000",
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 200
+        },
+        {
+            "desc": "totalprice with decimal",
+            "data": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": "5000.75",
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 200
+        },
+        {
+            "desc": "totalprice with comma",
+            "data": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": "5,000.75",
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 200
+        },
+        {
+            "desc": "totalprice with currency",
+            "data": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": "$5000",
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 200
+        },
+        {
+            "desc": "totalprice with empty string",
+            "data": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": "",
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 200
+        },
+        {
+            "desc": "depositpaid with string",
+            "data": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 5000,
+                "depositpaid": "false",
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 200
+        },
+        {
+            "desc": "depositpaid missing",
+            "data": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 5000,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 500
+        },
+        {
+            "desc": "checkin missing",
+            "data": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 5000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 500
+        },
+        {
+            "desc": "checkout missing",
+            "data": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 5000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-01"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 500
+        },
+        {
+            "desc": "additionalneeds missing",
+            "data": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 5000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-01"
+                }
             },
             "expectedStatus": 200
         }
     ],
 
+    "cbDates": [
+        {
+            "desc": "bookingdates with slash",
+            "data": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 5000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026/10/01",
+                    "checkout": "2026/10/09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 200,
+            "expectedCheckin": "2026-10-01",
+            "expectedCheckout": "2026-10-09"
+        },
+        {
+            "desc": "bookingdates with MDY format",
+            "data": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 5000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "October 3, 2026",
+                    "checkout": "October 10, 2026"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus": 200,
+            "expectedCheckin": "2026-10-03",
+            "expectedCheckout": "2026-10-10"
+        }
+    ],
+
     "ub": [
         {
-            "firstname": "Juan",
-            "lastname": "Dela Cruz",
-            "totalprice": 2435,
-            "depositpaid": true,
-            "checkin": "2026-10-01",
-            "checkout": "2026-10-09",
-            "additionalneeds": "valet"
+            "desc": "with complete and correct details",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Cruz",
+                "totalprice": 10000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200
         },
         {
-            "firstname": "Juan",
-            "lastname": "Dela Cruz",
-            "totalprice": 7434,
-            "depositpaid": true,
-            "checkin": "2026-10-03",
-            "checkout": "2026-10-10",
-            "additionalneeds": "breakfast"
+            "desc": "with empty request body",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {},
+            "expectedStatus2": 400
         },
         {
-            "firstname": "Juan",
-            "lastname": "Dela Cruz",
-            "totalprice": 7469,
-            "depositpaid": false,
-            "checkin": "2026-10-31",
-            "checkout": "2026-11-30",
-            "additionalneeds": "massage"
+            "desc": "firstname missing",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "lastname": "Cruz",
+                "totalprice": 10000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 400
+        },
+        {
+            "desc": "firstname with empty string",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "",
+                "lastname": "Cruz",
+                "totalprice": 10000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200
+        },
+        {
+            "desc": "firstname with special character",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Niño",
+                "lastname": "Cruz",
+                "totalprice": 10000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200
+        },
+        {
+            "desc": "lastname missing",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "totalprice": 10000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 400
+        },
+        {
+            "desc": "lastname with empty string",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "",
+                "totalprice": 10000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200
+        },
+        {
+            "desc": "lastname with special character",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200
+        },
+        {
+            "desc": "totalprice missing",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 400
+        },
+        {
+            "desc": "totalprice with empty string",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": "",
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200
+        },
+        {
+            "desc": "totalprice with string",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": "10000",
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200
+        },
+        {
+            "desc": "totalprice with comma",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": "10,000",
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200
+        },
+        {
+            "desc": "totalprice with currency",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": "$10000",
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200
+        },
+        {
+            "desc": "totalprice with decimal",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000.75,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200
+        },
+        {
+            "desc": "totalprice with large amount (max limit)",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 99999999999999999999,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200
+        },
+        {
+            "desc": "depositpaid missing",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 400
+        },
+        {
+            "desc": "depositpaid with string",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "depositpaid": "false",
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200
+        },
+        {
+            "desc": "depositpaid with empty string",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "depositpaid": "",
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200
+        },
+        {
+            "desc": "additionalneeds with empty string",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "depositpaid": "",
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": ""
+            },
+            "expectedStatus2": 200
+        },
+        {
+            "desc": "additionalneeds with boolean",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "depositpaid": "",
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": true
+            },
+            "expectedStatus2": 200
+        },
+        {
+            "desc": "additionalneeds with special character",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "depositpaid": "",
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast/Dinner & Parking"
+            },
+            "expectedStatus2": 200
+        }
+    ],
+
+    "ubDates": [
+        {
+            "desc": "bookingdates with MMDDYYYY format",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "10192026",
+                    "checkout": "10292026"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200,
+            "expectedCheckin": "2026-10-19",
+            "expectedCheckout": "2026-10-29"
+        },
+        {
+            "desc": "bookingdates with MDY format",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "October 19, 2026",
+                    "checkout": "October 29, 2026"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200,
+            "expectedCheckin": "2026-10-19",
+            "expectedCheckout": "2026-10-29"
+        },
+        {
+            "desc": "bookingdates with DMY format",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "19 October 2026",
+                    "checkout": "29 October 2026"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200,
+            "expectedCheckin": "2026-10-19",
+            "expectedCheckout": "2026-10-29"
+        },
+        {
+            "desc": "bookingdates with empty strings",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "",
+                    "checkout": ""
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200,
+            "expectedCheckin": "",
+            "expectedCheckout": ""
+        },
+        {
+            "desc": "bookingdates missing",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "depositpaid": false,
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 400,
+            "expectedCheckin": "",
+            "expectedCheckout": ""
+        },
+        {
+            "desc": "checkin missing",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 400,
+            "expectedCheckin": "",
+            "expectedCheckout": ""
+        },
+        {
+            "desc": "checkin with empty string",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "",
+                    "checkout": "2026-10-29"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200,
+            "expectedCheckin": "",
+            "expectedCheckout": "2026-10-29"
+        },
+        {
+            "desc": "checkout missing",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-19"
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 400,
+            "expectedCheckin": "",
+            "expectedCheckout": ""
+        },
+        {
+            "desc": "checkout with empty string",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": ""
+                },
+                "additionalneeds": "Breakfast, Valet Parking"
+            },
+            "expectedStatus2": 200,
+            "expectedCheckin": "2026-10-19",
+            "expectedCheckout": ""
+        }
+    ],
+
+    "ubAddtlNeeds": [
+        {
+            "desc": "additionalneeds missing",
+            "data1": {
+                "firstname": "Juan",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "Breakfast, Valet Parking, Massage, Spa"
+            },
+            "expectedStatus1": 200,
+            "data2": {
+                "firstname": "Juanito",
+                "lastname": "Nuñez",
+                "totalprice": 10000,
+                "depositpaid": "",
+                "bookingdates": {
+                    "checkin": "2026-10-19",
+                    "checkout": "2026-10-29"
+                }
+            },
+            "expectedStatus2": 200,
+            "expectedAddtlNeeds": "Breakfast, Valet Parking, Massage, Spa"
         }
     ]
 }

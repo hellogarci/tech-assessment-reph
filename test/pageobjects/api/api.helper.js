@@ -20,8 +20,6 @@ class ApiMethods {
         }
         try {
             const response = await this.clientRequest.post('/auth', cred);
-            // return response;
-            // console.log("token:::::: " + response.data.token);
             return response.data.token;
         } catch (error) {
             throw new Error(`Create Token API Setup Failed: ${error.message}`);
@@ -39,7 +37,6 @@ class ApiMethods {
 
     async updateBooking(genToken, idNum, bookingDetails) {
         try {
-            // const genToken = await this.createToken();
             let options = {
                 headers: {
                     'Authorization': 'Basic YWRtaW46cGFzc3dvcmQxMjM=',
@@ -58,12 +55,12 @@ class ApiMethods {
     }
 
     async getBooking(idNum) {
-        // try {
+        try {
             const response = await this.clientRequest.get('/booking/'+idNum);
             return response;
-        // } catch (error) {
-        //     throw new Error(`Get Booking API Setup Failed: ${error.message}`);
-        // }
+        } catch (error) {
+            throw new Error(`Get Booking API Setup Failed: ${error.message}`);
+        }
     }
 
     async deleteBooking(genToken, idNum) {

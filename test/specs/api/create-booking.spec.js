@@ -6,14 +6,18 @@ const tokenResp = await ApiMethods.createToken();
 
 describe('API Automation: CreateBooking', async function () {
 
-    it('Create a booking with complete and correct details', async function () {
+    it('Verify CreateBooking with complete and correct details', async function () {
         //create booking
         const createBookingResp = await ApiMethods.createBooking(apiData.complete);
         expect(createBookingResp.status).to.equal(200);
-        addContext(this, { title: "CreateBooking API response code", value: createBookingResp.status });
+        addContext(this, { title: "CreateBooking request body: ", value: apiData.complete });
+        addContext(this, { title: "CreateBooking API response code: ", value: createBookingResp.status });
+        addContext(this, { title: "CreateBooking API response body: ", value: createBookingResp.data });
 
         //get booking to check if the newly created booking exists and can be searched
         const getBookingResp = await ApiMethods.getBooking(createBookingResp.data.bookingid);
+        addContext(this, { title: "GetBooking API response code", value: getBookingResp.status });
+        addContext(this, { title: "GetBooking API response body", value: getBookingResp.data });
         expect(getBookingResp.status).to.equal(200);
         expect(getBookingResp.data.firstname).to.equal(apiData.complete.firstname);
         expect(getBookingResp.data.lastname).to.equal(apiData.complete.lastname);
@@ -22,8 +26,6 @@ describe('API Automation: CreateBooking', async function () {
         expect(getBookingResp.data.bookingdates.checkin).to.equal(apiData.complete.bookingdates.checkin);
         expect(getBookingResp.data.bookingdates.checkout).to.equal(apiData.complete.bookingdates.checkout);
         expect(getBookingResp.data.additionalneeds).to.equal(apiData.complete.additionalneeds);
-        addContext(this, { title: "GetBooking API response code", value: getBookingResp.status });
-        addContext(this, { title: "GetBooking API response body", value: getBookingResp.data });
 
         //request delete here
         const delBookingResp = await ApiMethods.deleteBooking(tokenResp, createBookingResp.data.bookingid);
@@ -33,7 +35,7 @@ describe('API Automation: CreateBooking', async function () {
         expect(confirmDelResp.status).to.equal(404);
     });
 
-    it('Create a booking with empty request body', async function () {
+    it('Verify CreateBooking with empty request body', async function () {
         const bookingDetails = {};
         //create booking
         const createBookingResp = await ApiMethods.createBooking(bookingDetails);
@@ -42,16 +44,19 @@ describe('API Automation: CreateBooking', async function () {
     });
 
     for (const dataset of apiData.cb) {
-        it('Create a booking: '+dataset.desc, async function () {
+        it('Verify CreateBooking: '+dataset.desc, async function () {
             //create booking
             const createBookingResp = await ApiMethods.createBooking(dataset.data);
             expect(createBookingResp.status).to.equal(dataset.expectedStatus);
+            addContext(this, { title: "CreateBooking request body: ", value: dataset.data });
             addContext(this, { title: "CreateBooking API response code: ", value: createBookingResp.status });
             addContext(this, { title: "CreateBooking API response body: ", value: createBookingResp.data });
 
             if (dataset.expectedStatus == 200) {
                 //get booking to check if the newly created booking exists and can be searched
                 const getBookingResp = await ApiMethods.getBooking(createBookingResp.data.bookingid);
+                addContext(this, { title: "GetBooking API response code: ", value: getBookingResp.status  });
+                addContext(this, { title: "GetBooking API response body: ", value: getBookingResp.data  });
                 expect(getBookingResp.status).to.equal(200);
                 expect(getBookingResp.data.firstname).to.equal(dataset.data.firstname);
                 expect(getBookingResp.data.lastname).to.equal(dataset.data.lastname);
@@ -60,8 +65,40 @@ describe('API Automation: CreateBooking', async function () {
                 expect(getBookingResp.data.bookingdates.checkin).to.equal(dataset.data.bookingdates.checkin);
                 expect(getBookingResp.data.bookingdates.checkout).to.equal(dataset.data.bookingdates.checkout);
                 expect(getBookingResp.data.additionalneeds).to.equal(dataset.data.additionalneeds);
+                
+                //Cleanup
+                //request delete here
+                const delBookingResp = await ApiMethods.deleteBooking(tokenResp, createBookingResp.data.bookingid);
+                expect(delBookingResp.status).to.equal(201);
+                //check if deleted
+                const confirmDelResp = await ApiMethods.getBooking(createBookingResp.data.bookingid);
+                expect(confirmDelResp.status).to.equal(404);
+            }
+        });
+    }
+
+    for (const dataset of apiData.cbDates) {
+        it('Verify CreateBooking for '+dataset.desc, async function () {
+            //create booking
+            const createBookingResp = await ApiMethods.createBooking(dataset.data);
+            expect(createBookingResp.status).to.equal(dataset.expectedStatus);
+            addContext(this, { title: "CreateBooking request body: ", value: dataset.data });
+            addContext(this, { title: "CreateBooking API response code: ", value: createBookingResp.status });
+            addContext(this, { title: "CreateBooking API response body: ", value: createBookingResp.data });
+
+            if (dataset.expectedStatus == 200) {
+                //get booking to check if the newly created booking exists and can be searched
+                const getBookingResp = await ApiMethods.getBooking(createBookingResp.data.bookingid);
                 addContext(this, { title: "GetBooking API response code: ", value: getBookingResp.status  });
                 addContext(this, { title: "GetBooking API response body: ", value: getBookingResp.data  });
+                expect(getBookingResp.status).to.equal(200);
+                expect(getBookingResp.data.firstname).to.equal(dataset.data.firstname);
+                expect(getBookingResp.data.lastname).to.equal(dataset.data.lastname);
+                expect(getBookingResp.data.totalprice).to.equal(dataset.data.totalprice);
+                expect(getBookingResp.data.depositpaid).to.equal(dataset.data.depositpaid);
+                expect(getBookingResp.data.bookingdates.checkin).to.equal(dataset.expectedCheckin);
+                expect(getBookingResp.data.bookingdates.checkout).to.equal(dataset.expectedCheckout);
+                expect(getBookingResp.data.additionalneeds).to.equal(dataset.data.additionalneeds);
 
                 //Cleanup
                 //request delete here
