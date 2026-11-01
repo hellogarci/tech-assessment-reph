@@ -1,31 +1,105 @@
 {
+    "complete": {
+        "firstname": "Juan",
+        "lastname": "Dela Cruz",
+        "totalprice": 2435,
+        "depositpaid": true,
+        "bookingdates": {
+            "checkin": "2026-10-01",
+            "checkout": "2026-10-09"
+        },
+        "additionalneeds": "valet"
+    },
+
     "cb": [
         {
-            "firstname": "larhguejabgruuilb001",
-            "lastname": "liygdfsghjkbdgligv001",
+            "desc": "firstname with empty string",
+            "data": {
+                "firstname": "",
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "valet"
+            },
+            "expectedStatus": 200
+        },
+        {
+            "desc": "firstname missing",
+            "data": {
+                "lastname": "Dela Cruz",
+                "totalprice": 2435,
+                "depositpaid": true,
+                "bookingdates": {
+                    "checkin": "2026-10-01",
+                    "checkout": "2026-10-09"
+                },
+                "additionalneeds": "valet"
+            },
+            "expectedStatus": 500
+        },
+        {
+            "desc": "firstname with number",
+            "data": {
+                "firstname": 1234,
+                "lastname": "Dela Cruz",
+                "totalprice": 7469,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-31",
+                    "checkout": "2026-11-30"
+                },
+                "additionalneeds": "massage"
+            },
+            "expectedStatus": 500
+        },
+        {
+            "desc": "firstname with special character",
+            "data": {
+                "firstname": "Niño",
+                "lastname": "Dela Cruz",
+                "totalprice": 7469,
+                "depositpaid": false,
+                "bookingdates": {
+                    "checkin": "2026-10-31",
+                    "checkout": "2026-11-30"
+                },
+                "additionalneeds": "massage"
+            },
+            "expectedStatus": 200
+        }
+    ],
+
+    "ub": [
+        {
+            "firstname": "Juan",
+            "lastname": "Dela Cruz",
             "totalprice": 2435,
             "depositpaid": true,
-            "checkin": "2026-10-31",
-            "checkout": "2026-11-30",
+            "checkin": "2026-10-01",
+            "checkout": "2026-10-09",
             "additionalneeds": "valet"
         },
         {
-            "firstname": "larhguejabgruuilb002",
-            "lastname": "liygdfsghjkbdgligv002",
+            "firstname": "Juan",
+            "lastname": "Dela Cruz",
             "totalprice": 7434,
             "depositpaid": true,
-            "checkin": "2026-10-31",
-            "checkout": "2026-11-30",
+            "checkin": "2026-10-03",
+            "checkout": "2026-10-10",
             "additionalneeds": "breakfast"
         },
         {
-            "firstname": "larhguejabgruuilb003",
-            "lastname": "liygdfsghjkbdgligv003",
+            "firstname": "Juan",
+            "lastname": "Dela Cruz",
             "totalprice": 7469,
             "depositpaid": false,
             "checkin": "2026-10-31",
             "checkout": "2026-11-30",
-            "additionalneeds": "petfood"
+            "additionalneeds": "massage"
         }
     ]
 }
