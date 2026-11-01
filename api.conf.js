@@ -24,7 +24,11 @@ export const config = {
     //
     specs: [
         // './test/specs/**/*.js'
-        './test/specs/api/api.spec.js'
+        // './test/specs/api/**/*.js'
+        './test/specs/api/create-booking.spec.js'
+        // './test/specs/api/update-booking.spec.js'
+        // './test/specs/api/get-booking.spec.js'
+        // './test/specs/api/delete-booking.spec.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -56,7 +60,8 @@ export const config = {
         browserName: 'chrome',
         'goog:chromeOptions': {
             args: [
-                '--window-size=1920,1080'
+                '--window-size=1920,1080',
+                '--headless'
             ]
         }
     }],
@@ -138,18 +143,24 @@ export const config = {
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
     // reporters: ['spec'],
-    reporters: [
-        ['allure', {
-            outputDir: 'allure-results',
-            disableWebdriverStepsReporting: false,
-            disableWebdriverScreenshotsReporting: false,
-            addConsoleLogs: true,
-            reportedEnvironmentVars: {
-                'NODE_VERSION': process.version,
-                'BROWSER': 'chrome'
-            }
-        }]
-    ],
+
+    // reporter: "mochawesome",
+    // reporterOptions: {
+    //     reportFilename: "[status]_[datetime]-[name]-report",
+    //     timestamp: "longDate"
+    // }
+    // reporters: [
+    //     'spec',
+    //     ['mochawesome', {
+    //         outputDir: './reports/mochawesome',
+    //         outputFileFormat: function(opts) {
+    //             return `results-${opts.cid}.json`;
+    //         }
+    //         // mochawesome_filename: 'wdio-mochawesome.json',
+    //         // includeScreenshots: true,
+    //         // screenshotUseRelativePath: true
+    //     }]
+    // ],
 
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
