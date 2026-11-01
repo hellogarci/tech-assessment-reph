@@ -15,7 +15,7 @@
     "wdio": "wdio run ./wdio.conf.js",
     "api": "wdio run ./api.conf.js",
     "report": "mocha --reporter mochawesome",
-    "test": "mocha ./test/specs/api/delete-booking.spec.js"
+    "test": "mocha ./test/specs/api/*.spec.js"
   },
   "dependencies": {
     "axios": "^1.21.0"
@@ -31,7 +31,7 @@
     "timeout": "10000",
     "ui": "bdd",
     "watch-files": [
-      "test/specs/api/delete-booking.spec.js"
+      "test/specs/api/*.spec.js"
     ],
     "watch-ignore": [
       "lib/vendor"
