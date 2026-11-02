@@ -1,0 +1,11 @@
+{
+    "urlSubFolder": "flight-search",
+    "stops": {
+        "direct": "direct",
+        "oneStop": "1 stop"
+    },
+    "compareVS": {
+        "trip": "Trip.com",
+        "pal": "Philippine Airlines"
+    }
+}

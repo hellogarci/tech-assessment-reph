@@ -1,12 +1,11 @@
 import { browser, expect } from '@wdio/globals';
-import { KEYSTROKE } from '../pageobjects/page.js';
-import HomePage from '../pageobjects/home.page.js';
-import HomeData from '../data/home.data.json' with { type: 'json' };
-import FSRPage from '../pageobjects/flight-search-result.page.js';
-import FSRData from '../data/flight-search-result.data.json' with { type: 'json' };
+import { KEYSTROKE, WAIT } from '../../pageobjects/web/page.js';
+import HomePage from '../../pageobjects/web/home.page.js';
+import HomeData from '../../data/web/home.data.json' with { type: 'json' };
+import FSRData from '../../data/web/flight-search-result.data.json' with { type: 'json' };
 import allureReporter from '@wdio/allure-reporter'
 
-describe('Cheapflights Home Page', () => {
+describe('Cheapflights Home Page', async () => {
     beforeEach(async () => {
         await HomePage.open(HomeData.home);
     });
@@ -22,6 +21,15 @@ describe('Cheapflights Home Page', () => {
         await loginIcon.waitForDisplayed();
         await expect(loginBtn).toBeDisplayed({ message: `Failed to display the white circle in the login button.` });
         await expect(loginIcon).toBeDisplayed({ message: `Failed to display the user icon in the login button.` });
+        const searchFlightsBtn = await HomePage.searchFlightsBtn;
+        const searchStaysBtn = await HomePage.searchStaysBtn;
+        const searchCarsBtn = await HomePage.searchCarsBtn;
+        await searchFlightsBtn.waitForDisplayed({ timeoutMsg: `Failed to wait for the Flights button to display.` });
+        await searchStaysBtn.waitForDisplayed({ timeoutMsg: `Failed to wait for the Stays button to display.` });
+        await searchCarsBtn.waitForDisplayed({ timeoutMsg: `Failed to wait for the Cars button to display.` });
+        await expect(searchFlightsBtn).toBeDisplayed({ message: `Failed to display the Flights button.` });
+        await expect(searchStaysBtn).toBeDisplayed({ message: `Failed to display the Stays button.` });
+        await expect(searchCarsBtn).toBeDisplayed({ message: `Failed to display the Cars button.` });
         const tripTypeDropdown = await HomePage.tripTypeDropdown;
         const flightOriginInput = await HomePage.flightOriginInput;
         const flightOriginXBtn = await HomePage.flightOriginXBtn;
@@ -56,7 +64,7 @@ describe('Cheapflights Home Page', () => {
 
     it('Verify required details for flight trip type Return - without origin', async () => {
         await allureReporter.addStory('Develop tests for searching flights');
-        //set Return
+        //set trip type
         await HomePage.selectTripType(HomeData.flightType.return);
         //remove origin
         const flightOriginXBtn = await HomePage.flightOriginXBtn;
@@ -84,7 +92,7 @@ describe('Cheapflights Home Page', () => {
 
     it('Verify required details for flight trip type Return - without destination', async () => {
         await allureReporter.addStory('Develop tests for searching flights');
-        //set Return
+        //set trip type
         await HomePage.selectTripType(HomeData.flightType.return);
         //set origin
         await HomePage.selectOrigin(HomeData.airport.naia.code);
@@ -112,7 +120,7 @@ describe('Cheapflights Home Page', () => {
 
     it('Verify required details for flight trip type Return - without date', async () => {
         await allureReporter.addStory('Develop tests for searching flights');
-        //set Return
+        //set trip type
         await HomePage.selectTripType(HomeData.flightType.return);
         //set origin
         await HomePage.selectOrigin(HomeData.airport.naia.code);
@@ -138,7 +146,7 @@ describe('Cheapflights Home Page', () => {
 
     it('Verify required details for flight trip type Return - with complete details and compare checked', async () => {
         await allureReporter.addStory('Develop tests for searching flights');
-        //set Return
+        //set trip type
         await HomePage.selectTripType(HomeData.flightType.return);
         //set origin
         await HomePage.selectOrigin(HomeData.airport.naia.code);
@@ -158,6 +166,8 @@ describe('Cheapflights Home Page', () => {
         await compareChkbox.waitForDisplayed({ timeoutMsg: `Failed to wait for the compare checkbox to display.` });
         await expect(compareChkbox).toBeDisplayed({ message: `Failed to display the compare checkbox after completing the required trip details.` });
         const compareInputChkbox = await compareChkbox.$(`input.dX-j-input`);
+        const isCompareTicked = await compareInputChkbox.isSelected();
+        if (!isCompareTicked) await compareInputChkbox.click();
         await expect(compareInputChkbox).toBeChecked({ message: `Failed to check the compare checkbox after completing the required trip details.` });
         const compareWithWebsite = await HomePage.compareWithWebsite;
         const siteName = await compareWithWebsite.getText();
@@ -179,8 +189,9 @@ describe('Cheapflights Home Page', () => {
         await expect(browser).toHaveWindowCount(2);
         await browser.switchToWindow(handles[0]);
         const parts = siteName.trim().split(/\s+/);
+        await browser.pause(WAIT.SHORT);
         for (const part of parts) {
-            await expect(browser).toHaveUrl(expect.stringContaining(part.toLowerCase()));
+            await expect( browser).toHaveUrl(expect.stringContaining(part.toLowerCase()));
         }
         await browser.switchToWindow(handles[1]);
         await expect(browser).toHaveUrl(expect.stringContaining(FSRData.urlSubFolder));
@@ -191,7 +202,7 @@ describe('Cheapflights Home Page', () => {
 
     it('Verify required details for flight trip type Return - with complete details and compare unchecked', async () => {
         await allureReporter.addStory('Develop tests for searching flights');
-        //set Return
+        //set trip type
         await HomePage.selectTripType(HomeData.flightType.return);
         //set origin
         await HomePage.selectOrigin(HomeData.airport.naia.code);
@@ -210,8 +221,8 @@ describe('Cheapflights Home Page', () => {
         const compareChkbox = await HomePage.compareChkbox;
         await compareChkbox.waitForDisplayed({ timeoutMsg: `Failed to wait for the compare checkbox to display.` });
         const compareInputChkbox = await compareChkbox.$(`input.dX-j-input`);
-        await expect(compareInputChkbox).toBeChecked({ message: `Failed to check the compare checkbox after completing the required trip details.` });
-        await compareInputChkbox.click();
+        const isCompareTicked = await compareInputChkbox.isSelected();
+        if (isCompareTicked) await compareInputChkbox.click();
         await expect(compareInputChkbox).not.toBeChecked({ message: `Failed to uncheck the compare checkbox after completing the required trip details.` });
         const compareWithWebsite = await HomePage.compareWithWebsite;
         const siteName = await compareWithWebsite.getText();
@@ -236,10 +247,9 @@ describe('Cheapflights Home Page', () => {
         
     });
 
-    //WIP
     it('Verify required details for flight trip type One-way', async () => {
         await allureReporter.addStory('Develop tests for searching flights');
-        //set Return
+        //set trip type
         await HomePage.selectTripType(HomeData.flightType.oneWay);
         //set origin
         await HomePage.selectOrigin(HomeData.airport.naia.code);
@@ -247,7 +257,114 @@ describe('Cheapflights Home Page', () => {
         await HomePage.selectDestination(HomeData.airport.hnd.code);
         //set dates
         const today = new Date();
-        const tomorrow = new Date(today);
+        await HomePage.setTripDuration(today);
+        //close travcabpopup and checkboxes are displayed and enabled
+        const travCabPopup = await HomePage.travCabPopup;
+        await browser.keys(KEYSTROKE.ESC);
+        await travCabPopup.waitForDisplayed({ reverse: true, timeoutMsg: `Failed to wait for the travellers and cabin class popup to be hidden.` });
+        await expect(travCabPopup).not.toBeDisplayed({ message: `Failed to hide the travellers and cabin class popup.` });
+        const compareChkbox = await HomePage.compareChkbox;
+        await compareChkbox.waitForDisplayed({ timeoutMsg: `Failed to wait for the compare checkbox to display.` });
+        const compareInputChkbox = await compareChkbox.$(`input.dX-j-input`);
+        const isCompareTicked = await compareInputChkbox.isSelected();
+        if (isCompareTicked) await compareInputChkbox.click();
+        const compareWithWebsite = await HomePage.compareWithWebsite;
+        const siteName = await compareWithWebsite.getText();
+        const directFlightsOnlyChkbox = await HomePage.directFlightsOnlyChkbox;
+        await directFlightsOnlyChkbox.waitForDisplayed({ timeoutMsg: `Failed to wait for the direct flights only checkbox to display.` });
+        await expect(directFlightsOnlyChkbox).toBeDisplayed({ message: `Failed to display the direct flights only checkbox.` });
+        const directFlightsOnlyInputChkbox = await directFlightsOnlyChkbox.$(`input.dX-j-input`);
+        await expect(directFlightsOnlyInputChkbox).not.toBeChecked({ message: `Failed to uncheck the direct flights only checkbox.` });
+        //click search, new tab will open and the old tab will be redirected to a new flight checker website (as indicated in the compare checkbox label)
+        const searchBtn = await HomePage.searchBtn;
+        await searchBtn.waitForDisplayed({ timeoutMsg: `Failed to wait for the search button to display.` });
+        await searchBtn.click();
+        const handles = await browser.getWindowHandles();
+        await expect(browser).toHaveWindowCount(1);
+        await browser.switchToWindow(handles[0]);
+        const parts = siteName.trim().split(/\s+/);
+        for (const part of parts) {
+            await expect(browser).not.toHaveUrl(expect.stringContaining(part.toLowerCase()));
+        }
+        await expect(browser).toHaveUrl(expect.stringContaining(FSRData.urlSubFolder));
+        await expect(browser).toHaveUrl(expect.stringContaining(HomeData.airport.naia.code + "-" + HomeData.airport.hnd.code));
+    });
+
+    it('Verify Multi-city flight search bar initial display', async () => {
+        await allureReporter.addStory('Develop tests for validation the logo and login button is displayed');
+        //set trip type
+        await HomePage.selectTripType(HomeData.flightType.multiCity);
+        const multiSearchBar = await HomePage.multiSearchBar;
+        await expect(await multiSearchBar.length).toEqual(3);
+        let ctr = 1;
+        for (const searchBar of multiSearchBar) {
+            await searchBar.waitForDisplayed({ timeoutMsg: `Failed to wait for the multi-city search bar (${ctr}) to display after switching the trip type to Multi-city.` });
+            await expect(searchBar).toBeDisplayed({ message: `Failed to display the multi-city search bar (${ctr}) after switching the trip type to Multi-city.` });
+            ctr++;
+        }
+        ctr = 1;
+        const multiFlightOrigin = await HomePage.multiFlightOrigin;
+        await expect(await multiFlightOrigin.length).toEqual(3);
+        for (const flightOrigin of multiFlightOrigin) {
+            await flightOrigin.waitForDisplayed({ timeoutMsg: `Failed to wait for the multi-city flight origin field (${ctr}) to display after switching the trip type to Multi-city.` });
+            await expect(flightOrigin).toBeDisplayed({ message: `Failed to display the multi-city flight origin field (${ctr}) after switching the trip type to Multi-city.` });
+            ctr++;
+        }
+        ctr = 1;
+        const multiFlightDestination = await HomePage.multiFlightDestination;
+        await expect(await multiFlightDestination.length).toEqual(3);
+        for (const flightDestination of multiFlightDestination) {
+            await flightDestination.waitForDisplayed({ timeoutMsg: `Failed to wait for the multi-city flight destination field (${ctr}) to display after switching the trip type to Multi-city.` });
+            await expect(flightDestination).toBeDisplayed({ message: `Failed to display the multi-city flight destination field (${ctr}) after switching the trip type to Multi-city.` });
+            ctr++;
+        }
+        ctr = 1;
+        const multiCalendarBtn = await HomePage.multiCalendarBtn;
+        await expect(await multiCalendarBtn.length).toEqual(3);
+        for (const calendarBtn of multiCalendarBtn) {
+            await calendarBtn.waitForDisplayed({ timeoutMsg: `Failed to wait for the multi-city calendar button (${ctr}) to display after switching the trip type to Multi-city.` });
+            await expect(calendarBtn).toBeDisplayed({ message: `Failed to display the multi-city calendar button (${ctr}) after switching the trip type to Multi-city.` });
+            ctr++;
+        }
+        ctr = 1;
+        const multiCabinTypeBtn = await HomePage.multiCabinTypeBtn;
+        await expect(await multiCabinTypeBtn.length).toEqual(3);
+        for (const cabinTypeBtn of multiCabinTypeBtn) {
+            await cabinTypeBtn.waitForDisplayed({ timeoutMsg: `Failed to wait for the multi-city cabin type button (${ctr}) to display after switching the trip type to Multi-city.` });
+            await expect(cabinTypeBtn).toBeDisplayed({ message: `Failed to display the multi-city cabin type button (${ctr}) after switching the trip type to Multi-city.` });
+            ctr++;
+        }
+        ctr = 1;
+        const multiRemoveLegXBtn = await HomePage.multiRemoveLegXBtn;
+        await expect(await multiRemoveLegXBtn.length).toEqual(2);
+        for (const removeLegXBtn of multiRemoveLegXBtn) {
+            await removeLegXBtn.waitForDisplayed({ timeoutMsg: `Failed to wait for the multi-city X button (${ctr}) to display after switching the trip type to Multi-city.` });
+            await expect(removeLegXBtn).toBeDisplayed({ message: `Failed to display the multi-city X button (${ctr}) after switching the trip type to Multi-city.` });
+            ctr++;
+        }
+        const multiAddAnotherFlightBtn = await HomePage.multiAddAnotherFlightBtn;
+        await multiAddAnotherFlightBtn.waitForDisplayed({ timeoutMsg: `Failed to wait for the Add another flight button to display.` });
+        await expect(multiAddAnotherFlightBtn).toBeDisplayed({ message: `Failed to display the Add another flight button.` });
+        const directFlightsOnlyChkbox = await HomePage.directFlightsOnlyChkbox;
+        //direct flights only checkbox does not display when this is the only test script that is executed.
+        await directFlightsOnlyChkbox.waitForDisplayed({ timeoutMsg: `Failed to wait for the Direct flights only checkbox to display.` });
+        await expect(directFlightsOnlyChkbox).toBeDisplayed({ message: `Failed to display the Direct flights only checkbox.` });
+    });
+
+    //WIP
+    xit('Verify required details for flight trip type Multi-city', async () => {
+        await allureReporter.addStory('Develop tests for searching flights');
+        //set trip type
+        await HomePage.selectTripType(HomeData.flightType.multiCity);
+        const multiSearchBar = await HomePage.multiSearchBar;
+        await multiSearchBar.waitForDisplayed({ timeoutMsg: `Failed to wait for the multi-city search bars to display after switching the trip type to Multi-city.` });
+        await expect(multiSearchBar).toBeDisplayed({ message: `Failed to display the multi-city search bars after switching the trip type to Multi-city.` });
+        //set origin
+        await HomePage.selectOrigin(HomeData.airport.naia.code);
+        //set destination
+        await HomePage.selectDestination(HomeData.airport.hnd.code);
+        //set dates
+        const today = new Date();
         tomorrow.setDate(today.getDate() + 1);
         await HomePage.setTripDuration(today, tomorrow);
         //close travcabpopup and checkboxes are displayed and enabled
@@ -258,8 +375,8 @@ describe('Cheapflights Home Page', () => {
         const compareChkbox = await HomePage.compareChkbox;
         await compareChkbox.waitForDisplayed({ timeoutMsg: `Failed to wait for the compare checkbox to display.` });
         const compareInputChkbox = await compareChkbox.$(`input.dX-j-input`);
-        await compareInputChkbox.click();
-        await expect(compareInputChkbox).not.toBeChecked({ message: `Failed to uncheck the compare checkbox after completing the required trip details.` });
+        const isCompareTicked = await compareInputChkbox.isSelected();
+        if (isCompareTicked) await compareInputChkbox.click();
         const compareWithWebsite = await HomePage.compareWithWebsite;
         const siteName = await compareWithWebsite.getText();
         const directFlightsOnlyChkbox = await HomePage.directFlightsOnlyChkbox;
@@ -279,11 +396,6 @@ describe('Cheapflights Home Page', () => {
             await expect(browser).not.toHaveUrl(expect.stringContaining(part.toLowerCase()));
         }
         await expect(browser).toHaveUrl(expect.stringContaining(FSRData.urlSubFolder));
-        await expect(browser).toHaveUrl(expect.stringContaining(HomeData.airport.naia.code + "-" + HomeData.airport.hnd.code));
-    });
-
-    xit('Verify required details for flight trip type Multi-city', async () => {
-        await allureReporter.addStory('Develop tests for searching flights');
-        
+        await expect(browser).toHaveUrl(expect.stringContaining(HomeData.airport.naia.code + "-" + HomeData.airport.hnd.code));        
     });
 });

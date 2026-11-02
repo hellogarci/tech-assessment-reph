@@ -8,13 +8,13 @@
     "airport": {
         "naia": {
             "code": "MNL",
-            "loc": "Manila",
-            "name": "Ninoy Aquino Intl",
+            "city": "Manila",
+            "name": "Ninoy Aquino",
             "country": "Philippines"
         },
         "hnd": {
             "code": "HND",
-            "loc": "Tokyo",
+            "city": "Tokyo",
             "name": "Haneda",
             "country": "Japan"
         }
@@ -23,6 +23,17 @@
         "enterDest": "Please enter a Destination airport.",
         "departureDate": "Please enter a Departure date.",
         "returnDate": "Please enter a Return date."
+    },
+    "cabinClass": {
+        "eco": "Economy",
+        "premEco": "Premium Economy",
+        "bus": "Business",
+        "first": "First"
+    },
+    "trav": {
+        "adults": "Adults",
+        "child": "Children",
+        "infant": "Infants on lap"
     }
     
 }
