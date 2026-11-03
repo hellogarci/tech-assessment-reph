@@ -23,9 +23,9 @@ export const config = {
     // of the config file unless it's absolute.
     //
     specs: [
-        // './test/specs/web/**/*.js'
+        './test/specs/web/**/*.js'
         // './test/specs/web/home.spec.js'
-        './test/specs/web/flight-search-result.spec.js'
+        // './test/specs/web/flight-search-result.spec.js'
     ],
     // Patterns to exclude.
     exclude: [
