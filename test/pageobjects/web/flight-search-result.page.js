@@ -14,10 +14,19 @@ class FlightSearchResultPage extends Page {
     get cabinClassDetails () { return $$(`//div[contains(@aria-label,'Result item')]//span[contains(@title,'Economy')]`) }
     async departureDate (sDate) { return $$(`div[aria-label='Departure date ${sDate}']`)[1]; }
     async returnDate (eDate) { return $$(`div[aria-label='Return date ${eDate}']`)[1]; }
-    get tripcomOriginAirport () { return $(`//div[contains(@aria-label,'Departure airport or city')]//div[contains(@class,'city-name')]/span[contains(@class,'airport-name')]`); }
-    get tripcomOriginCity () { return $(`//div[contains(@aria-label,'Departure airport or city')]//div[contains(@class,'city-name')]/span[contains(@class,'city-name')]`); }
-    get tripcomDestinationAirport () { return $(`//div[contains(@aria-label,'Arrival airport or city')]//div[contains(@class,'city-name')]/span[contains(@class,'airport-name')]`); }
-    get tripcomDestinationCity () { return $(`//div[contains(@aria-label,'Arrival airport or city')]//div[contains(@class,'city-name')]/span[contains(@class,'city-name')]`); }
+    get tripcomLoading () { return $(`div.usp-loading-content`); }
+    get tripcomLogo () { return $(`div.mc-hd__logo-con`); }
+    get tripcomOriginAirportA () { return $(`//div[contains(@aria-label,'Departure airport or city')]//div[contains(@class,'city-name')]/span[contains(@class,'airport-name')]`); }
+    get tripcomOriginAirportB () { return $(`//div[contains(@aria-label,'Departure airport or city')]//span[contains(@class,'city-name')]/span[contains(@class,'airport-name')]`); }
+    get tripcomOriginCityA () { return $(`//div[contains(@aria-label,'Departure airport or city')]//div[contains(@class,'city-name')]/span[contains(@class,'city-name')]`); }
+    get tripcomOriginCityB () { return $(`//div[contains(@aria-label,'Departure airport or city')]//span[contains(@class,'city-name')]/span[not(contains(@class,'airport-name'))]`); }
+    get tripcomDestinationAirportA () { return $(`//div[contains(@aria-label,'Arrival airport or city')]//div[contains(@class,'city-name')]/span[contains(@class,'airport-name')]`); }
+    get tripcomDestinationAirportB () { return $(`//div[contains(@aria-label,'Arrival airport or city')]//span[contains(@class,'city-name')]/span[contains(@class,'airport-name')]`); }
+    get tripcomDestinationCityA () { return $(`//div[contains(@aria-label,'Arrival airport or city')]//div[contains(@class,'city-name')]/span[contains(@class,'city-name')]`); }
+    get tripcomDestinationCityB () { return $(`//div[contains(@aria-label,'Arrival airport or city')]//span[contains(@class,'city-name')]/span[not(contains(@class,'airport-name'))]`); }
+    get tripcomDepartureDate () { return $(`input[data-testid='search_date_depart0']`); }
+    get tripcomReturnDate () { return $(`input[data-testid='search_date_return0']`); }
+    get tripcomStopType () { return $(`span[data-testid='direct-button-text']`); }
     get palOriginAirport () { return $(``); }
     get palOriginCity () { return $(``); }
     get palDestinationAirport () { return $(``); }

@@ -34,12 +34,21 @@ export default class Page {
         return finalFormattedDate;
     }
 
-    async formatDateDM(unformattedDate) {
+    async formatDateWDM(unformattedDate) {
         const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         const dayName = daysOfWeek[unformattedDate.getDay()];
         const day = unformattedDate.getDate();
         const month = unformattedDate.getMonth()+1;
         const formattedDate = `${dayName} ${day}/${month}`;
+        return formattedDate;
+    }
+
+    async formatDateWDMtripcom (unformattedDate) {
+        const formattedDate = new Intl.DateTimeFormat('en-US', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric'
+        }).format(unformattedDate);
         return formattedDate;
     }
 }

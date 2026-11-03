@@ -10,11 +10,14 @@ class HomePage extends Page {
     get cfLogo () { return $(`span.gPDR-logo-image`); } //Cheapflights logo
     get loginBtn () { return $(`div.common-layout-react-HeaderAccountWrapper`); } //white circle
     get loginIcon () { return $(`span.J-sA-icon`); } //user icon
+
+    get searchMenuBar () { return  $(`ul[role="menubar"]`); }
     get searchFlightsBtn () { return $(`//div[text()='Flights']/../..//li[@role='menuitem']/a[@aria-label='Search for flights']`); }
     get searchStaysBtn () { return $(`//div[text()='Flights']/../..//li[@role='menuitem']/a[@aria-label='Search for stays']`); }
     get searchCarsBtn () { return $(`//div[text()='Flights']/../..//li[@role='menuitem']/a[@aria-label='Search for cars']`); }
 
     //Flight search bar
+    get flightSearchBar () { return $(`div.IeUn-mod-at-desktop-enabled`); }
     get tripTypeDropdown () { return $(`div[aria-controls='flight-trip-type-dropdown']`); }
     async flightTripType(type) { 
         return $(`ul#flight-trip-type-dropdown > li[aria-label='${type}']`); 
