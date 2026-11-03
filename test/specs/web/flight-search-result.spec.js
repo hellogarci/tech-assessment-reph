@@ -69,12 +69,12 @@ describe('Cheapflights Search Result Page', () => {
             if (ctr >= 10)
                 break;
         }
-        const dDate = await FSRPage.formatDateDM(today);
+        const dDate = await FSRPage.formatDateWDM(today);
         const departureDate = await FSRPage.departureDate(dDate);
         await departureDate.waitForDisplayed({ timeout: `Failed to wait for the selected departure date to display.` });
         await expect(departureDate).toBeDisplayed({ message: `Failed to display the selected departure date.` });
         
-        const rDate = await FSRPage.formatDateDM(tomorrow);
+        const rDate = await FSRPage.formatDateWDM(tomorrow);
         const returnDate = await FSRPage.returnDate(rDate);
         await returnDate.waitForDisplayed({ timeout: `Failed to wait for the selected return date to display.` });
         await expect(returnDate).toBeDisplayed({ message: `Failed to display the selected return date.` });
@@ -194,7 +194,7 @@ describe('Cheapflights Search Result Page', () => {
     });
 
     //WIP
-    xit('Verify flight search results when Compare vs Cheapflights is checked', async () => {
+    it('Verify flight search results when Compare vs Cheapflights and Direct flights only is checked', async () => {
         await allureReporter.addStory('Develop assertions for flight search results');
         //set trip type
         await HomePage.selectTripType(HomeData.flightType.return);
@@ -204,6 +204,7 @@ describe('Cheapflights Search Result Page', () => {
         await HomePage.selectDestination(HomeData.airport.hnd.code);
         //set dates
         const today = new Date();
+        today.setDate(today.getDate() + 1);
         const tomorrow = new Date(today);
         tomorrow.setDate(today.getDate() + 1);
         await HomePage.setTripDuration(today, tomorrow);
@@ -221,6 +222,13 @@ describe('Cheapflights Search Result Page', () => {
         await expect(compareInputChkbox).toBeChecked({ message: `Failed to check the compare checkbox after completing the required trip details.` });
         const compareWithWebsite = await HomePage.compareWithWebsite;
         const siteName = await compareWithWebsite.getText();
+        const directFlightsOnlyChkbox = await HomePage.directFlightsOnlyChkbox;
+        await directFlightsOnlyChkbox.waitForDisplayed({ timeoutMsg: `Failed to wait for the direct flights only checkbox to display.` });
+        await expect(directFlightsOnlyChkbox).toBeDisplayed({ message: `Failed to display the direct flights only checkbox.` });
+        const directFlightsOnlyInputChkbox = await directFlightsOnlyChkbox.$(`input.dX-j-input`);
+        const isDirectTicked = await directFlightsOnlyInputChkbox.isSelected();
+        if (!isDirectTicked) await directFlightsOnlyInputChkbox.click();
+        await expect(directFlightsOnlyInputChkbox).toBeChecked({ message: `Failed to uncheck the direct flights only checkbox.` });
         //click search, new tab will open and the old tab will be redirected to a new flight checker website (as indicated in the compare checkbox label)
         const searchBtn = await HomePage.searchBtn;
         await searchBtn.waitForDisplayed({ timeoutMsg: `Failed to wait for the search button to display.` });
@@ -233,24 +241,73 @@ describe('Cheapflights Search Result Page', () => {
         const handles = await browser.getWindowHandles();
         await expect(browser).toHaveWindowCount(2);
         await browser.switchToWindow(handles[0]);
+        let ctr = 1;
+        await browser.waitUntil(
+            async () => {
+                console.log(ctr);
+                const currentSite = await browser.getUrl();
+                console.log(currentSite);
+                let sitename = await siteName.toLowerCase();
+                console.log (currentSite.includes(sitename))
+                ctr++;
+                return await currentSite.includes(sitename);
+            }, {
+                timeout: WAIT.LONG,
+                timeoutMsg: `Failed to wait for the page to redirect to ${siteName}.`,
+                interval: 5000
+            }
+        );
+        const tripcomLoading = await FSRPage.tripcomLoading;
+        await tripcomLoading.waitForDisplayed({ reverse: true, timeout: WAIT.MED, timeoutMsg: `Failed to wait for the loading screen to disappear.` });
+        const tripcomLogo = await FSRPage.tripcomLogo;
+        await tripcomLogo.waitForDisplayed({ timeout: WAIT.LONG, timeoutMsg: `Failed to wait for the Trip.com logo to display` });
         const parts = siteName.trim().split(/\s+/);
-        await browser.pause(WAIT.SHORT);
         for (const part of parts) {
             await expect(browser).toHaveUrl(expect.stringContaining(part.toLowerCase()));
         }
         if (siteName == FSRData.compareVS.trip) {
-            const tripcomOriginAirport = await FSRPage.tripcomOriginAirport;
-            const tripcomOriginAirportTxt = await tripcomOriginAirport.getText();
-            await expect(tripcomOriginAirportTxt).toHaveText(expect.stringContaining(HomeData.airport.naia.name));
-            const tripcomOriginCity = await FSRPage.tripcomOriginCity;
-            const tripcomOriginCityTxt = await tripcomOriginCity.getText();
-            await expect(tripcomOriginCityTxt).toHaveText(expect.stringContaining(HomeData.airport.naia.city));
-            const tripcomDestinationAirport = await FSRPage.tripcomDestinationAirport;
-            const tripcomDestinationAirportTxt = await tripcomDestinationAirport.getText();
-            await expect(tripcomDestinationAirportTxt).toHaveText(expect.stringContaining(HomeData.airport.hnd.name));
-            const tripcomDestinationCity = await FSRPage.tripcomDestinationCity;
-            const tripcomDestinationCityTxt = await tripcomDestinationCity.getText();
-            await expect(tripcomDestinationCityTxt).toHaveText(expect.stringContaining(HomeData.airport.hnd.city));
+            const originAirportA = await FSRPage.tripcomOriginAirportA;
+            const originAirportB = await FSRPage.tripcomOriginAirportB;
+            const originAirport = (await originAirportA.isDisplayed()) ? originAirportA : originAirportB;
+            await originAirport.waitForDisplayed({ timeoutMsg: `Failed to wait for the airport origin to display in Trip.com website.` });
+            // const originAirportTxt = await originAirport.getText();
+            await expect(originAirport).toHaveText(expect.stringContaining(HomeData.airport.naia.name));
+
+            const originCityA = await FSRPage.tripcomOriginCityA;
+            const originCityB = await FSRPage.tripcomOriginCityB;
+            const originCity = (await originCityA.isDisplayed()) ? originCityA : originCityB;
+            await originCity.waitForDisplayed({ timeoutMsg: `Failed to wait for the city origin to display in Trip.com website.` });
+            await expect(originCity).toHaveText(expect.stringContaining(HomeData.airport.naia.city));
+            await expect(originCity).toHaveText(expect.stringContaining(HomeData.airport.naia.code));
+            
+            const tripcomDestinationAirportA = await FSRPage.tripcomDestinationAirportA;
+            const tripcomDestinationAirportB = await FSRPage.tripcomDestinationAirportB;
+            const destinationAirport = (await tripcomDestinationAirportA.isDisplayed()) ? tripcomDestinationAirportA : tripcomDestinationAirportB;
+            await destinationAirport.waitForDisplayed({ timeoutMsg: `Failed to wait for the airport destination to display in Trip.com website.` });
+            await expect(destinationAirport).toHaveText(expect.stringContaining(HomeData.airport.hnd.name));
+            
+            const tripcomDestinationCityA = await FSRPage.tripcomDestinationCityA;
+            const tripcomDestinationCityB = await FSRPage.tripcomDestinationCityB;
+            const destinationCity = (await tripcomDestinationCityA.isDisplayed()) ? tripcomDestinationCityA : tripcomDestinationCityB;
+            await destinationCity.waitForDisplayed({ timeoutMsg: `Failed to wait for the city destination to display in Trip.com website.` });
+            await expect(destinationCity).toHaveText(expect.stringContaining(HomeData.airport.hnd.city));
+            await expect(destinationCity).toHaveText(expect.stringContaining(HomeData.airport.hnd.code));
+
+            const dDate = await FSRPage.formatDateWDMtripcom(today);
+            const departureDate = await FSRPage.tripcomDepartureDate;
+            await departureDate.waitForDisplayed({ timeout: `Failed to wait for the selected departure date to display.` });
+            await expect(departureDate).toBeDisplayed({ message: `Failed to display the selected departure date.` });
+            await expect(departureDate).toHaveValue(dDate);
+            
+            const rDate = await FSRPage.formatDateWDMtripcom(tomorrow);
+            const returnDate = await FSRPage.tripcomReturnDate;
+            await returnDate.waitForDisplayed({ timeout: `Failed to wait for the selected return date to display.` });
+            await expect(returnDate).toBeDisplayed({ message: `Failed to display the selected return date.` });
+            await expect(returnDate).toHaveValue(rDate);
+
+            const tripcomStopType = await FSRPage.tripcomStopType;
+            await tripcomStopType.waitForDisplayed();
+            await expect(tripcomStopType).toBeSelected({ message: `Failed to select the Direct flight radio button in Trip.com.` });
         }
         await browser.switchToWindow(handles[1]);
         await expect(browser).toHaveUrl(expect.stringContaining(FSRData.urlSubFolder));
